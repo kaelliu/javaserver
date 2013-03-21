@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.service.ChatInfoDao">
+	<resultMap type="com.service.ChatInfoDto" id="ChatInfoDaoResultMap">
+		<id property="id" column="ID"/>
+		<result property="fid" column="FROMID"/>
+		<result property="tid" column="TOID"/>
+		<result property="ti" column="TIME"/>
+		<result property="ct" column="CONTENT"/>
+	</resultMap>
+	
+	<select id="getChatInfo" parameterType="int" resultMap="ChatInfoDaoResultMap">
+    	select * from ChatInfo where ID=#{id}
+    </select>
+    
+    <select id="getmyChat" parameterType="java.util.HashMap" resultMap="ChatInfoDaoResultMap">
+    	select * from ChatInfo where (FROMID=#{rid1} and TOID=#{rid2}) or (FROMID=#{rid2} and TOID=#{rid1})
+    </select>
+    
+    <insert id="createChatInfo"  parameterType="java.util.HashMap">
+    	insert into ChatInfo(FROMID,TOID,CONTENT,TIME)
+    	VALUES(#{fid},#{tid},#{ct},#{ti});
+    	<selectKey keyProperty="id" resultType="int">SELECT @@IDENTITY AS id</selectKey>
+    </insert>
+    
+    <update id="changeChatInfo" parameterType="java.util.HashMap">
+    	update ChatInfo
+    	<set>
+    		<if test="fid != null">
+    			FROMID=#{fid},
+    		</if>
+    		<if test="tid != null">
+    			TOID=#{tid},
+    		</if>
+    		<if test="ct != null">
+    			CONTENT=#{ct},
+    		</if>
+    		<if test="ti != null">
+    			TIME=#{ti},
+    		</if>
+    		</set>
+    	<where>
+    		<if test="id != null">
+    			ID=#{id}
+    		</if>
+    	</where> 
+    </update>
+    
+    <delete id="deleteChatInfo" parameterType="java.lang.Integer">
+    	delete from ChatInfo where ID=#{id}
+    </delete>
+</mapper>
