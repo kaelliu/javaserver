@@ -1,0 +1,8 @@
+1.if you use myeclipse to package project as runnable jar,it will do right thing for you;
+because it have maven inside it,but if you only use eclipse ,the package will make wrong
+thing to over write the meta-inf folder for spring package and make the wrong when run.
+in ecplise
+a.you can use maven ,see http://robert-reiz.com/2011/11/14/832/ for more detail
+b.you can integrate the spring.handlers/spring.schemas file by gather each spring jar 
+file's meta-inf,and replace these file in your jar.such as in this folder
+2.database should case-sensitive
