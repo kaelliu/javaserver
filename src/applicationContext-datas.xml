@@ -9,7 +9,8 @@
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-	<!--<context:property-placeholder location="classpath:resources/mysql.properties"/>
+    <!-- in spring 3.0 remember to add ignore-unresolvable=true if you have more than one property-placeholder -->
+	<context:property-placeholder location="classpath:resources/mysql.properties"/>
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
 		<property  name ="delegateProperties" > 
              <value>user=${jdbc.username},password=${jdbc.password}</value> 
@@ -50,16 +51,6 @@
         <property name="configLocation" value="classpath:MyBatis-Configuration.xml"></property>
         <property name="dataSource" ref="dataSource" />
     </bean>
-    -->
     <!-- Logic Dao AND ServiceImpl -->
-    <!--
-    <bean id="emailDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.service.EmailDao"></property>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-    </bean>
-     <bean id="chatInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.service.ChatInfoDao"></property>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-    </bean>
-    -->
+   	
 </beans>

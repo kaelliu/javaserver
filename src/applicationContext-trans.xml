@@ -9,7 +9,7 @@
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-	
+	<!-- use database transaction's class will declare here -->
 	<!-- 
 	<bean id="recordUpdater" parent="baseTransactionProxy">
 		<property name="target">

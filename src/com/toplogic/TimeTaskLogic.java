@@ -6,7 +6,6 @@ import java.util.Map;
 import org.jboss.netty.channel.Channel;
 
 import com.kael.GameServer;
-import com.service.EmailService;
 
 public class TimeTaskLogic {
 
@@ -17,17 +16,10 @@ public class TimeTaskLogic {
 	public static final byte WORLDMSG_SIDE   = 5;
 	public static final byte WORLDMSG_SWAR   = 6;
 	public static final byte WORLDMSG_JTWAR  = 7;
-	private EmailService emailService;
 	//////////////////////////////////////////////////////////////////////////////////////
 	//  机动定时处理相关的对外接口，比如：刷副本。  
 	//////////////////////////////////////////////////////////////////////////////////////
 	
-	public EmailService getEmailService() {
-		return emailService;
-	}
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
 	public void removeHangUpTask(String msg,Channel ch){
 	}
 	//重启 扫荡
