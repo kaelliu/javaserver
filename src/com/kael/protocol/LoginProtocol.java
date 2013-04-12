@@ -3,24 +3,24 @@ package com.kael.protocol;
 import lib.kael.ProtocolBase;
 
 public class LoginProtocol extends ProtocolBase{
-	private String nm;
-	private int    id;
-	public int getId() {
-		return id;
+	private String un;
+	public String getUn() {
+		return un;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setUn(String un) {
+		this.un = un;
+	}
+	
+	private String pass;
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 	public LoginProtocol()
 	{
-		this.Cmd = ProtocolMatch.MAIN_CMD_LOGIN_LOGIN;
-	}
-	public String getNm() {
-		return nm;
-	}
-
-	public void setNm(String nm) {
-		this.nm = nm;
+		this.Cmd= ProtocolMatch.PS_CMD_LOGIN;
 	}
 	
 }

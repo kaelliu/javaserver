@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="com.service.UserDao">
-	<!--cache eviction="LRU" type="lib.kael.MemcachedCache"></cache-->
+	<!--cache eviction="LRU" type="lib.kael.MemcachedCache"></cache>-->
+	<!--cache eviction="LRU" type="lib.kael.RedisCache"></cache>-->
 	<resultMap type="com.service.UserDto" id="UserDaoResultMap">
 		<id property="uid" column="UID"/>
 		<result property="userName" column="USERNAME"/>
@@ -15,6 +16,9 @@
 	</resultMap> 
     <select id="login" parameterType="java.util.HashMap" resultType="int" useCache="false">
     	select count(*) from users where UserName=#{username} and Password=#{password}
+    </select>
+    <select id="login2" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    	select uid from users where UserName=#{username} and Password=#{password} limit 1
     </select>
     <insert id="register" parameterType="java.util.HashMap">
     	insert into users(UserName,Password,Sex,Icon,NickName) VALUES(#{username},#{password},#{sex},#{ico},#{nm});
@@ -42,4 +46,30 @@
     <select id="getuserDetail" parameterType="java.lang.Integer" resultMap="UserDetailDaoResultMap">
     	select username,sex,icon from users where UID=#{id}
     </select>
+    
+    <update id="changeUser" parameterType="java.util.HashMap">
+		update users
+		<set>
+			<if test="username != null">
+				username = #{username},
+			</if>
+			<if test="sex != null">
+				sex = #{sex},
+			</if>
+			<if test="icon != null">
+				icon = #{icon},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname}
+			</if>
+		</set>
+		<where>
+			<if test="uid != null">
+    			UID = #{uid}
+    		</if>
+		</where>
+	</update>
 </mapper>

@@ -4,6 +4,7 @@ import java.util.Map;
 
 public interface UserService {
 	public int login(Map param);
+	public int login2(Map param);
 	public int register(Map param);
 	public void insertUser(Map param);
 	public int getuid(String un);

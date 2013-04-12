@@ -26,5 +26,11 @@ public class ProtocolMatch
 	public final static short MAIN_CMD_USER_GONE = 3;
 	
 	public final static short MAIN_CMD_USER_LIST = 4;
+	
+	public final static short PS_CMD_REGISTER   = 10;
+	public final static short PS_CMD_LOGIN	    = 11;
+	public final static short PS_CMD_MODIFY     = 12;// optional
+	public final static short PS_CMD_DELETEUSR  = 13;
+	public final static short PS_CMD_QUERY      = 14;// QUERY USER
 
 }

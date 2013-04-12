@@ -1,0 +1,13 @@
+package com.kael.data;
+
+option java_package = "com.kael.data"; 
+option java_outer_classname = "UserInfo";
+
+message UserInfo { 
+  required int32 uid = 1;         
+  required string un = 2; 
+  required string pass = 3; 
+  required string nn = 4; 
+  required int32 sex = 5; 
+  required int32 ico = 6; 
+}

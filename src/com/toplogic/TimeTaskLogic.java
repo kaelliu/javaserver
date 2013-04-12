@@ -2,10 +2,16 @@ package com.toplogic;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+
 import org.jboss.netty.channel.Channel;
 
+import redis.clients.jedis.Jedis;
+
 import com.kael.GameServer;
+import com.service.UserService;
 
 public class TimeTaskLogic {
 
@@ -16,9 +22,63 @@ public class TimeTaskLogic {
 	public static final byte WORLDMSG_SIDE   = 5;
 	public static final byte WORLDMSG_SWAR   = 6;
 	public static final byte WORLDMSG_JTWAR  = 7;
+	private UserService userService;
+	long lastCurrentTime = System.currentTimeMillis();
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	private int cnt = 0;
 	//////////////////////////////////////////////////////////////////////////////////////
 	//  机动定时处理相关的对外接口，比如：刷副本。  
 	//////////////////////////////////////////////////////////////////////////////////////
+	/*每分执行*/
+	public void handleByMinute(){
+		Calendar c = Calendar.getInstance();
+		cnt++;
+		if(cnt > 2)
+		{
+			cnt = 0;
+			recordInfo();
+		}
+	}
+	
+	private void recordInfo()
+	{
+		// 写入最新的分数
+		Jedis jedis = GameServer.cacheMgr.getResource();
+		long now = System.currentTimeMillis();//currentTime - 180000;
+		Set<String> set = jedis.zrangeByScore("lastdirty", lastCurrentTime, now);
+		Iterator<String> i = set.iterator();
+		while(i.hasNext())
+		{
+			String id = i.next();
+			int uid = Integer.parseInt(id);
+			if(uid < 0)
+				continue;
+			// find what tobe update
+			// INSERT into xxx(id,row,r) VALUES(1,234,444) on DUPLICATE KEY UPDATE row=234,r=444
+			Set<String> dirty = jedis.smembers("u:"+id+":info_dirty");
+			Map need = new HashMap();
+			Iterator<String> i2 = set.iterator();
+			while(i2.hasNext())
+			{
+				String column = i2.next();
+//				Integer value = Integer.parseInt(jedis.hget("u:"+id, column));
+				// if is a number/int/byte/or something? this need fix
+				need.put(column, jedis.hget("u:"+id, column));
+			}
+			userService.changeUser(need);
+		}
+		// clear the sorted set
+		jedis.zremrangeByScore("lastdirty", lastCurrentTime, now);
+		lastCurrentTime = System.currentTimeMillis();
+	}
+	
 	
 	public void removeHangUpTask(String msg,Channel ch){
 	}
@@ -44,14 +104,7 @@ public class TimeTaskLogic {
 
 	/*每天19:00,19:10,19:20,19:30 发送报名消息*/
 	public void handleSociatyNotice1(){
-		//Calendar c = Calendar.getInstance();
-		//int minute = c.get(Calendar.MINUTE);
-//		// delete this after test
-//		////////////////////////////////////////
-//		initSociatyDatas();
-//		///////////////////////////////////////
-		//if(minute < 22){
-		//}
+
 	}
 	/*每天19:05,19:15,19:25,19:35 发送战斗消息*/
 	public void handleSociatyNotice2(){
@@ -124,43 +177,8 @@ public class TimeTaskLogic {
 		{
 		}else if(hour==22){
 		}
-		// 清理ThreadLocal,不行，删了会事务不同步，这个似乎又不是内存问题的主要根源
-		//ThreadLocalCleanUtil.clearThreadLocals();
 	}
-	/*每分执行*/
-	public void handleByMinute(){
-		Calendar c = Calendar.getInstance();
-		int hour = c.get(Calendar.HOUR_OF_DAY);
-		int min = c.get(Calendar.MINUTE);
-		//if(hour==18 && min==59 )initSociatyDatas();//初始化公会战初始信息。 -- test
-		
-		// 南蛮入侵通知
-		if(hour == 15)
-		{
-			if(c.get(Calendar.MINUTE) == 29)// from 15:28:00 send notice message
-			{
-				
-			}
-			// for test
-//			if(c.get(Calendar.MINUTE) == 32)// 
-//			{
-//				daliy_world_boss_end();
-//			}
-		}
-		else if(hour == 9 && min == 59)// 公会防御战通知
-		{
-			
-		}
-		else if(hour == 19 && min == 40)// 结束广播
-		{
-			
-		}
-//		if(min % 5 == 0)// every minute,record the online count
-//		{
-			recordOnLineInfo();
-//		}
-		
-	}
+
 	
 	/*每秒执行*/
 	public void handleBySecond(){

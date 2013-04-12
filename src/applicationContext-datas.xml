@@ -52,5 +52,8 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     <!-- Logic Dao AND ServiceImpl -->
-   	
+   	<bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.service.UserDao"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
 </beans>

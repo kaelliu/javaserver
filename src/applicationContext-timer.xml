@@ -8,6 +8,7 @@
 	<!-- 处理任务所在类 -->
 	
 	<bean id="timetask" class="com.toplogic.TimeTaskLogic">
+		<property name="userService"><ref bean="userService" /></property>
 	</bean>
 	
 	<!-- 任务处理方法设置 -->

@@ -13,6 +13,7 @@ import com.kael.GameServer;
 import com.kael.protocol.ChatBroadCastProtocol;
 import com.kael.protocol.ChatProtocol;
 import com.kael.protocol.ConnectedOrDisConnectProtocol;
+import com.kael.protocol.LoginChatProtocol;
 import com.kael.protocol.LoginProtocol;
 import com.kael.protocol.LoginRequestListProtocol;
 import com.kael.protocol.ProtocolMatch;
@@ -21,7 +22,7 @@ public class ChatLogic {
 	
 	public boolean handleRoleComeSendListBack(String msg,Channel ch)
 	{
-		LoginProtocol lp = (LoginProtocol) new LoginProtocol().fromJObj(msg);
+		LoginChatProtocol lp = (LoginChatProtocol) new LoginChatProtocol().fromJObj(msg);
 		// 1.save to memory session data
 		if(GameServer.sessionDatas.containsKey(ch))
 		{
@@ -56,7 +57,7 @@ public class ChatLogic {
 	
 	public boolean handleRoleCome(String msg,Channel ch)
 	{
-		LoginProtocol lp = (LoginProtocol) new LoginProtocol().fromJObj(msg);
+		LoginChatProtocol lp = (LoginChatProtocol) new LoginChatProtocol().fromJObj(msg);
 		// 1.save to memory session data
 		if(GameServer.sessionDatas.containsKey(ch))
 		{
@@ -72,7 +73,7 @@ public class ChatLogic {
 		//GameServer.idWithChannel.put(lp.getId(), ch);
 		// 2.broadcast to other user
 		Set entrys = GameServer.sessionDatas.entrySet();
-		LoginProtocol toMe = new LoginProtocol();
+		LoginChatProtocol toMe = new LoginChatProtocol();
 		//if(entrys.size() > 1)// not only me
 		{
 			Iterator it = entrys.iterator();

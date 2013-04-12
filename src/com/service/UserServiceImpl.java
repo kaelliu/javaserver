@@ -84,4 +84,13 @@ public class UserServiceImpl implements UserService{
 		return userDao.getuserDetail(uid);
 	}
 
+	@Override
+	public int login2(Map param) {
+		Integer res = userDao.login2(param);
+		if(res == null)
+			return -1;
+		else
+			return res.intValue();
+	}
+
 }
