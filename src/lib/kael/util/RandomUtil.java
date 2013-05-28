@@ -67,4 +67,8 @@ public class RandomUtil
 		int timestamp = (int) (System.currentTimeMillis()/1000);
 		return (r.nextInt(timestamp)%(max-min))+min;
 	}
+	public static int r_betweenEx(Random r,int min,int max)
+	{
+		return r.nextInt((max-min))+min;
+	}
 }
